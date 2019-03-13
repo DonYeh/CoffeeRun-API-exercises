@@ -1,34 +1,21 @@
 const API_URL = "/coffee.json";
 
-let allOrdersArray = [];
+let allEmailArray = [];
 let allOrders;
 
-// function accumulateOrders(theActualData) {
-//   allOrdersArray = [allOrdersArray, theActualData];
-//   //   storeOrders(allOrdersArray);
-//   //   if (theActualData.length === 0) {
-//   //     main();
-//   console.log(API_URL);
-// }
-
-// function storeOrders(arrayOfOrders) {
-//   const jsonCharacters = JSON.stringify(arrayOfOrders);
-//   console.log(`saving ${arrayOfOrders.length} orders`);
-//   localStorage.setItem("coffee-orders", jsonCharacters);
-// }
-
-// function retrievePageOfOrders() {
 fetch(API_URL)
   .then(function(order) {
     return order.json();
   })
   .then(function(data) {
     allOrders = data;
-    allOrdersArray = Object.keys(data);
+    allEmailArray = Object.keys(data);
+    console.log(`logging allOrders: ${allOrders}`);
     console.log(allOrders);
-    drawEmailToListing(allOrdersArray);
+    console.log(allEmailArray);
+
+    drawEmailToListing(allEmailArray);
   });
-// }
 
 function drawEmailToListing(keys) {
   keys.forEach(function(customer) {
@@ -44,6 +31,31 @@ function drawEmailToListing(keys) {
   });
 }
 
-// function main(){
+function drawDetails(email) {
+  const detailArea = document.querySelector("[data-details]");
+  detailArea.textContent = "";
+  const emailDiv = document.createElement("div");
+  const coffeeDiv = document.createElement("div");
+  const flavorDiv = document.createElement("div");
+  const sizeDiv = document.createElement("div");
+  const strengthDiv = document.createElement("div");
 
-// };
+  //   console.log(`logging email inside drawDetails: ${email}`);
+
+  if (email === allOrders[email].emailAddress) {
+    // console.log(`logging from inside the if: ${allOrders[email]._id}`);
+    emailDiv.textContent = `Email Address: ${allOrders[email].emailAddress}`;
+    coffeeDiv.textContent = `Coffee: ${allOrders[email].coffee}`;
+    flavorDiv.textContent = `Flavor: ${allOrders[email].flavor}`;
+    sizeDiv.textContent = `Size: ${allOrders[email].size}`;
+    strengthDiv.textContent = `Strength: ${allOrders[email].strength}`;
+  }
+
+  detailArea.appendChild(emailDiv);
+  detailArea.appendChild(coffeeDiv);
+  detailArea.appendChild(flavorDiv);
+  detailArea.appendChild(sizeDiv);
+  detailArea.appendChild(strengthDiv);
+}
+
+drawDetails(allOrders);
